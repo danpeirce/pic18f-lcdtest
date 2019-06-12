@@ -1,6 +1,6 @@
 //***************************************************************************************
 // 
-// APSC1299 first project. Note 2x8 LCD must be connected to 
+// ANote 2x8 LCD must be connected to 
 // 3pi robot.  
 // adapted from LCD_test.c for sparkfun serial LCD 2x16 
 // on May 29, 2019 which was
@@ -40,55 +40,23 @@ void main(void)  // a C project can only have one main() function
     Delay10KTCYx(200); 
     Delay10KTCYx(200);     
     Delay10KTCYx(190);  
-    Delay10KTCYx(190);
-    Delay10KTCYx(200); // Delay10KTCYx(num), num can only range from 1 to 255 
-    Delay10KTCYx(200); 
-    Delay10KTCYx(200);     
     Delay10KTCYx(190);  
-    Delay10KTCYx(190);
-    
-    //putch(0xB7);
-    //Delay10KTCYx(19); 
-    //putch(0xB8);
-    //Delay10KTCYx(1);
-    //putch(0x03);
-    //Delay10KTCYx(1);
-    //printf("K");
-    //Delay10KTCYx(1); 
-    //printf("P");
-    //Delay10KTCYx(1); 
-    //printf("U");
-    //Delay10KTCYx(1);
-    //putch(0xB9);  // place cursor
-    //Delay10KTCYx(1);
-    //putch(0x00);  // column zero
-    //Delay10KTCYx(1);
-                   // note cannot include null in a string!
-    //putch(0x01); // second row
-    //Delay10KTCYx(1);
-    //putch(0xB8); // send string to LCD
-    //Delay10KTCYx(1);
-    //putch(0x08); // eight characters 
-    //Delay10KTCYx(1);
-    //printf("APSC1299");
+ 
     { 
         char i=0;
-        int wait = 0;
         while(i<19)
         {
-            if(TRMT)  //TXIF
+            if(TRMT)  // was TXIF but TRMT working better with 3Pi
             {
                 TXREG = buffer[i];
                 i++;
-                //wait = 3;
             }
-            //if(TRMT && wait) wait--;
         }
-     }
+    }
 	while(1)
 	{
         
-		  // MCUs run continuouslly so an endless loop is required.
+		  // MCUs run continuously so an endless loop is required.
 	}
 }	
 
