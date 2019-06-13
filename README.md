@@ -10,4 +10,6 @@ This image shows the 3Pi connected to a PIC18F2620 via the serial Tx and Rx line
 
 ![](image/PIC-on-3pi.jpg)
 
+Code update: Now also displays Battery Voltage in mV.
+
 This is still in just a very early stage of development.

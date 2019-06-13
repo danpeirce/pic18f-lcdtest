@@ -16,8 +16,8 @@
 #include "osc.h"            // library for set_osc_32MHz()
 #include "configureUSART.h" // library for configureUSART(baud)
 
-char buffer[] = { 0xB7, 0xB8, 0x03, 'K', 'P', 'U', 0xB9, 0x00, 0x01, 0xB8, 0x08, 'A', 'P', 'S', 'C', '1', '2', '9', '9','\0'};
-
+char msg1[] = { 0xB7, 0xB8, 0x03, 'K', 'P', 'U', 0xB9, 0x00, 0x01, 0xB8, 0x08, 'A', 'P', 'S', 'C', '1', '2', '9', '9','\0'};
+char buffer[50];
 void main(void)  // a C project can only have one main() function
 {
 	
@@ -39,12 +39,43 @@ void main(void)  // a C project can only have one main() function
     Delay10KTCYx(200); // Delay10KTCYx(num), num can only range from 1 to 255 
     Delay10KTCYx(200); 
     Delay10KTCYx(200);     
-    Delay10KTCYx(190);  
-    Delay10KTCYx(190);  
+     
  
     { 
         char i=0;
         while(i<19)
+        {
+            if(TRMT)  // was TXIF but TRMT working better with 3Pi
+            {
+                TXREG = msg1[i];
+                i++;
+            }
+        }
+    }
+    Delay10KTCYx(200);     
+    Delay10KTCYx(190);  
+    Delay10KTCYx(190);
+    Delay10KTCYx(190);  
+    Delay10KTCYx(190); 
+    {
+        char data_recL, data_recU;
+        int battvolt, msglength, i=0;
+        if (DataRdyUSART( )) data_recL = ReadUSART (); // flush rec data if exists
+        if (DataRdyUSART( )) data_recL = ReadUSART (); // flush rec data if exists
+        TXREG = 0xB1;  // send read MV command
+        while(!DataRdyUSART()) continue;
+        data_recL = ReadUSART (); 
+        while(!DataRdyUSART()) continue;
+        data_recU = ReadUSART (); 
+        TXREG = 0xB7;  // send clear screen command
+        //while(!TRMT) continue;
+        battvolt = data_recL + 256 * data_recU;
+        msglength = sprintf(buffer, "%d mV", battvolt);
+        while(!TRMT) continue;
+        TXREG = 0xB8;  // print LCD message
+        while(!TRMT) continue;
+        TXREG = (char)msglength; // send message length
+        while(i<msglength)
         {
             if(TRMT)  // was TXIF but TRMT working better with 3Pi
             {
